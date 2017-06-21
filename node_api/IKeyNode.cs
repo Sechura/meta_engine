@@ -119,19 +119,28 @@ namespace Engine
         InputKeyKeyboardY,
         InputKeyKeyboardZ,
 
-        InputKeyMouseCursor,
+        InputKeyMouseCursorX,
+        InputKeyMouseCursorY,
         InputKeyMouseLeft,
         InputKeyMouseMiddle,
         InputKeyMouseRight,
         InputKeyMouse4,
         InputKeyMouse5,
-        InputKeyMouseWheelUp,
-        InputKeyMouseWheelDown,
+        InputKeyMouse6,
+        InputKeyMouse7,
+        InputKeyMouse8,
+        InputKeyMouse9,
+        InputKeyMouse10,
+        InputKeyMouse11,
+        InputKeyMouse12,
+        InputKeyMouseWheel,
 
-        InputKeyJoystick,
-
-        InputKeyGamepadStickLeft,
-        InputKeyGamepadStickRight,
+        InputKeyGamepadStickLeftAxisX,
+        InputKeyGamepadStickLeftAxisY,
+        InputKeyGamepadStickRightAxisX,
+        InputKeyGamepadStickRightAxisY,
+        InputKeyGamepadStart,
+        InputKeyGamepadSelect,
         InputKeyGamepadA,
         InputKeyGamepadB,
         InputKeyGamepadX,
@@ -145,15 +154,74 @@ namespace Engine
         InputKeyGamepadTriggerRight1,
         InputKeyGamepadTriggerRight2,
 
+        InputKeyJoystickAxisX,
+        InputKeyJoystickAxisY,
+        InputKeyJoystickAxisZ,
+        InputKeyJoystickButton1,
+        InputKeyJoystickButton2,
+        InputKeyJoystickButton3,
+        InputKeyJoystickButton4,
+        InputKeyJoystickButton5,
+        InputKeyJoystickButton6,
+        InputKeyJoystickButton7,
+        InputKeyJoystickButton8,
+        InputKeyJoystickButton9,
+        InputKeyJoystickButton10,
+        InputKeyJoystickButton11,
+        InputKeyJoystickButton12,
+        InputKeyJoystickButton13,
+        InputKeyJoystickButton14,
+        InputKeyJoystickButton15,
+        InputKeyJoystickButton16,
+
+        InputKeyWheel,
+
+        InputKeyHeadsetRoll,
+        InputKeyHeadsetPitch,
+        InputKeyHeadsetYaw,
+        InputKeyHeadsetLookX,
+        InputKeyHeadsetLookY,
+        InputKeyHeadsetLookZ,
+
+        InputKeyRemoteRoll,
+        InputKeyRemotePitch,
+        InputKeyRemoteYaw,
+        InputKeyRemotePointX,
+        InputKeyRemotePointY,
+        InputKeyRemotePointZ,
+        InputKeyRemoteStart,
+        InputKeyRemoteSelect,
+        InputKeyRemoteDpadUp,
+        InputKeyRemoteDpadDown,
+        InputKeyRemoteDpadLeft,
+        InputKeyRemoteDpadRight,
+        InputKeyRemoteA,
+        InputKeyRemoteB,
+        InputKeyRemoteC,
+        InputKeyRemoteZ,
+        InputKeyRemote1,
+        InputKeyRemote2,
+
+        InputKeyCamera,
+
         InputKeyUpperBound
+    }
+
+    public struct InputKeyState
+    {
+        UInt32 Position;
+        float Delta;
     }
 
     public interface IKeyNode : INode
     {
+        bool GetInputKeyState(InputKey pKey, ref InputKeyState pKeyState);
+        bool GetInputKeyStateArray(InputKey[] pKeyArray, ref InputKeyState[] pKeyStates);
+
         bool BindInputToLocaleAction(Action<InputKey, string> pLocaleAction);
         void UnbindInputFromLocaleAction();
 
-        bool BindInputKeyToAction(InputKey pKey, Action<InputKey> pAction);
+        bool BindInputKeyToAction(InputKey pKey, Action<InputKey, InputKeyState> pAction);
         void UnbindInputKeyFromAction(InputKey pKey);
     }
 }

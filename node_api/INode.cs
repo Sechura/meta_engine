@@ -6,8 +6,17 @@ namespace Engine
     {
         public struct NodeMetaDescription
         {
+            [Flags]
+            public enum NodeMetaCompatibility
+            {
+                Windows = 1,
+                Linux = 2,
+                MacOSX = 4
+            }
+
             public string ImplementorTypeName;
             public NodeType ImplementedInterface;
+            public NodeMetaCompatibility CompatibleSystems;
         }
 
         public NodeType[] PrerequisiteNodeTypes;
@@ -15,9 +24,10 @@ namespace Engine
         public NodeMetaDescription[] ImplementedNodes;
     }
 
-    public interface INode
+    public interface INode : IDisposable
     {
         bool GetNodeMetaInfo(IEngine pEngine, ref NodeMetaInfo pMetaInfo);
         bool RunUnitTests();
+        bool InitializeNode();
     }
 }
