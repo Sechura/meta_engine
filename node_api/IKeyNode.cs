@@ -2,6 +2,9 @@
 
 namespace Engine
 {
+    /// <summary>
+    /// An enumeration of valid input keys for all supported devices.
+    /// </summary>
     public enum InputKey
     {
         InputKeyUnrecognized = 0,
@@ -207,21 +210,75 @@ namespace Engine
         InputKeyUpperBound
     }
 
+    /// <summary>
+    /// A structure defining the current state of an InputKey member.
+    /// </summary>
     public struct InputKeyState
     {
+        /// <summary>
+        /// The current position of the InputKey member.
+        /// </summary>
         UInt32 Position;
+
+        /// <summary>
+        /// The delta of the InputKey member from the last state update.
+        /// </summary>
         float Delta;
     }
 
+    /// <summary>
+    /// All key mapping nodes must implement this interface.
+    /// <para>Includes INode, IDisposable.</para>
+    /// </summary>
     public interface IKeyNode : INode
     {
+        /// <summary>
+        /// Gets the current state of the specified InputKey member.
+        /// <para>This will fail if pKey is not a valid member of the InputKey enumeration.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
+        /// </summary>
+        /// <param name="pKey">A valid member of the InputKey enumeration.</param>
+        /// <param name="pKeyState">The current state of the specified InputKey member. This will remain unchanged if the function fails.</param>
+        /// <returns>Returns true on success and false on failure.</returns>
         bool GetInputKeyState(InputKey pKey, ref InputKeyState pKeyState);
+
+        /// <summary>
+        /// Gets the current states of all specified InputKey members.
+        /// <para>This will fail if any values in pKeyArray are not valid members of the InputKey enumeration.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
+        /// </summary>
+        /// <param name="pKeyArray">An array of members of the InputKey enumeration.</param>
+        /// <param name="pKeyStates">An array of states of the specified InputKey members of equivalent indices. This will remain unchanged of the function fails.</param>
+        /// <returns>Returns true on success and false on failure.</returns>
         bool GetInputKeyStateArray(InputKey[] pKeyArray, ref InputKeyState[] pKeyStates);
 
+        /// <summary>
+        /// Binds all input translated from the currently selected locale map to the specified action.
+        /// <para>This will fail if the node is not yet initialized.</para>
+        /// </summary>
+        /// <param name="pLocaleAction">A callback function that receives all locale mapped input.</param>
+        /// <returns>Returns true on success and false on failure.</returns>
         bool BindInputToLocaleAction(Action<InputKey, string> pLocaleAction);
+
+        /// <summary>
+        /// Unbinds all input translated from the currently selected locale map from any action.
+        /// </summary>
         void UnbindInputFromLocaleAction();
 
+        /// <summary>
+        /// Binds the specified member of the InputKey enumeration to the specified action.
+        /// <para>This will fail if pKey is not a valid member of the InputKey enumeration.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
+        /// </summary>
+        /// <param name="pKey">A valid member of the InputKey enumeration.</param>
+        /// <param name="pAction">A callback function that receives the state of the specified member of the InputKey enumeration.</param>
+        /// <returns>Returns true on success and false on failure.</returns>
         bool BindInputKeyToAction(InputKey pKey, Action<InputKey, InputKeyState> pAction);
+
+        /// <summary>
+        /// Unbinds the specified member of the InputKey enumeration from any action.
+        /// </summary>
+        /// <param name="pKey">A valid member of the InputKey enumeration.</param>
         void UnbindInputKeyFromAction(InputKey pKey);
     }
 }

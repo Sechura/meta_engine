@@ -97,6 +97,7 @@ namespace Engine
 
     /// <summary>
     /// Window manager nodes must implement this interface.
+    /// <para>Includes INode, IDisposable.</para>
     /// </summary>
     public interface IWindowNode : INode
     {
@@ -127,7 +128,8 @@ namespace Engine
 
         /// <summary>
         /// Gets an array of window IDs for all windows controlled by this node.
-        /// <para>This function will fail if there aren't any windows currently controlled by this node.</para>
+        /// <para>This will fail if there aren't any windows currently controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowIdArray">Window ID array, this will remain unchanged if the function fails.</param>
         /// <returns>Returns true on success and false on failure.</returns>
@@ -136,6 +138,7 @@ namespace Engine
         /// <summary>
         /// Adds a new window with the specified parameters to this node.
         /// <para>This will fail if the window size is less than 640x480.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// <para>This may fail if the underlying system rejects the specified window parameters.</para>
         /// </summary>
         /// <param name="pWindowTitle">The text displayed in the window's title bar and in the task bar.</param>
@@ -157,6 +160,7 @@ namespace Engine
         /// Sets the specified window ID as the primary window.
         /// <para>This does not change the window, it is only to mark the intended render target window for the engine.</para>
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <returns>Returns true on success and false on failure.</returns>
@@ -165,6 +169,7 @@ namespace Engine
         /// <summary>
         /// Gets the window ID of the current primary window.
         /// <para>This will fail if there is no primary window set or the previous primary window no longer exists.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <returns>Returns true on success and false on failure.</returns>
@@ -173,6 +178,7 @@ namespace Engine
         /// <summary>
         /// Gets the underlying system handle for the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowHandle">The underlying system handle of the specified window, this will remain unchanged if the function fails.</param>
@@ -182,6 +188,7 @@ namespace Engine
         /// <summary>
         /// Sets the pixel position of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowLeft">The pixel position of the window on the display's X axis.</param>
@@ -192,6 +199,7 @@ namespace Engine
         /// <summary>
         /// Gets the current pixel position of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowLeft">The pixel position of the window on the display's X axis.</param>
@@ -203,6 +211,7 @@ namespace Engine
         /// Sets the pixel size of the window associated with the specified window ID.
         /// <para>This will fail if the window size is less than 640x480.</para>
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowWidth">The pixel width of the window, this can't be less than 640.</param>
@@ -213,6 +222,7 @@ namespace Engine
         /// <summary>
         /// Gets the current pixel size of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowWidth">The pixel width of the window, this can't be less than 640.</param>
@@ -223,6 +233,7 @@ namespace Engine
         /// <summary>
         /// Sets the title of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowTitle">The text displayed in the window's title bar and in the task bar.</param>
@@ -232,6 +243,7 @@ namespace Engine
         /// <summary>
         /// Gets the title of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowTitle">The text displayed in the window's title bar and in the task bar.</param>
@@ -242,6 +254,7 @@ namespace Engine
         /// Gets the state of the window associated with the specified window ID.
         /// <para>This will fail if the value in pWindowState is not a valid member of the WindowState enumeration.</para>
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowState">A valid WindowState enumeration member.</param>
@@ -251,6 +264,7 @@ namespace Engine
         /// <summary>
         /// Sets the state of the window associated with the specified window ID.
         /// <para>This will fail if the specified window ID does not belong to an existing window controlled by this node.</para>
+        /// <para>This will fail if the node is not yet initialized.</para>
         /// </summary>
         /// <param name="pWindowId">A window ID of a window currently controlled by this node.</param>
         /// <param name="pWindowState">A valid WindowState enumeration member.</param>

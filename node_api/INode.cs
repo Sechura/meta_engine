@@ -3,7 +3,7 @@
 namespace Engine
 {
     /// <summary>
-    /// An structure describing metadata about a node.
+    /// An structure describing meta information about a node.
     /// </summary>
     public struct NodeMetaInfo
     {
@@ -57,24 +57,26 @@ namespace Engine
 
     /// <summary>
     /// A common interface for all nodes.
+    /// <para>Nodes should use a constructor without parameters to initialize themselves to the point of supporting GetNodeMetaInfo.</para>
+    /// <para>All other initialization should occur when the engine calls InitializeNode.</para>
     /// <para>Includes IDisposable.</para>
     /// </summary>
     public interface INode : IDisposable
     {
         /// <summary>
-        /// 
+        /// Get the meta information for all interfaces supported by this node.
+        /// <para>This function should be available before the engine calls InitializeNode.</para>
         /// </summary>
-        /// <param name="pEngine"></param>
-        /// <param name="pMetaInfo"></param>
-        /// <returns></returns>
-        bool GetNodeMetaInfo(IEngine pEngine, ref NodeMetaInfo[] pMetaInfo);
-
-        bool RunUnitTests();
+        /// <param name="pMetaInfo">An array of meta information about the interfaces implemented by this node.</param>
+        void GetNodeMetaInfo(ref NodeMetaInfo[] pMetaInfo);
 
         /// <summary>
-        /// 
+        /// Fully initializes the node and all supported interfaces.
+        /// <para>The node should expect that all prerequisite node types are loaded by the engine beforehand.</para>
+        /// <para>However the node is expected to use pEngine to acquire references to its prerequisite node types.</para>
         /// </summary>
-        /// <returns></returns>
-        bool InitializeNode();
+        /// <param name="pEngine">An interface that allows the node to call core engine functions.</param>
+        /// <returns>Returns true on success and false on failure.</returns>
+        bool InitializeNode(IEngine pEngine);
     }
 }
