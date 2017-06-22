@@ -7,7 +7,7 @@ namespace Engine
     {
         public TestClassAttribute()
         {
-
+            // empty
         }
     }
 
