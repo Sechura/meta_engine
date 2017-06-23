@@ -324,15 +324,26 @@ namespace Engine
                     fClassResult.Name = UnitClass.Key.UnitName;
                     fClassResult.StartTime = DateTime.Now;
 
-                    if (0 == UnitClass.Key.UnitAttribute.TestParameters.Length)
+                    foreach (ConstructorInfo fConstructor in UnitClass.Key.UnitTypeInfo.GetConstructors(BindingFlags.Public))
                     {
-                        UnitClass.Key.UnitTypeInfo.GetConstructor(Type.EmptyTypes).Invoke(UnitClass.Key.UnitInstance, UnitClass.Key.UnitAttribute.TestParameters);
+                        UnitTestAttribute fConstructorAttribute = fConstructor.GetCustomAttribute<UnitTestAttribute>();
+
+                        if(null == fConstructorAttribute)
+                        {
+                            if (UnitClass.Key.UnitAttribute.TestParameters.Length == fConstructor.GetParameters().Length)
+                            {
+                                fConstructor.Invoke(UnitClass.Key.UnitInstance, UnitClass.Key.UnitAttribute.TestParameters);
+
+                                fInitialized = true;
+                            }
+                        }
                     }
-                    else
+
+                    if (false == fInitialized)
                     {
                         foreach (ConstructorInfo fConstructor in UnitClass.Key.UnitTypeInfo.GetConstructors(BindingFlags.Public))
                         {
-                            if(UnitClass.Key.UnitAttribute.TestParameters.Length == fConstructor.GetParameters().Length)
+                            if (UnitClass.Key.UnitAttribute.TestParameters.Length == fConstructor.GetParameters().Length)
                             {
                                 fConstructor.Invoke(UnitClass.Key.UnitInstance, UnitClass.Key.UnitAttribute.TestParameters);
 
