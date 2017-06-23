@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine
+﻿namespace Engine
 {
     /// <summary>
     /// All components in the entity system must implement this interface.

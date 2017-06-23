@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine
+﻿namespace Engine
 {
     /// <summary>
     /// An interface implemented by the engine for all nodes to access.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Engine
+﻿namespace Engine
 {
     /// <summary>
     /// All locale mapping nodes must implement this interface.
