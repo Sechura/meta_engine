@@ -232,18 +232,13 @@ namespace Engine
             }
         }
 
-        public static void PerformAllTests()
+        private static bool BuildTestHierarchy()
         {
-            UnitTestResult fOverall = new UnitTestResult();
+            bool fResult = true;
 
             try
             {
-                TestHierarchy.Clear();
-                ResultQueue.Clear();
-
-                fOverall.StartTime = DateTime.Now;
-
-                foreach(Type fType in Assembly.GetEntryAssembly().GetTypes())
+                foreach (Type fType in Assembly.GetEntryAssembly().GetTypes())
                 {
                     TypeInfo fTypeInfo = fType.GetTypeInfo();
                     UnitTestAttribute fTypeAttribute = fTypeInfo.GetCustomAttribute<UnitTestAttribute>();
@@ -280,11 +275,11 @@ namespace Engine
                     {
                         if (true == fTypeInfo.IsClass)
                         {
-                            foreach(MethodInfo fMethod in fTypeInfo.GetMethods())
+                            foreach (MethodInfo fMethod in fTypeInfo.GetMethods())
                             {
                                 UnitTestAttribute fMethodAttribute = fMethod.GetCustomAttribute<UnitTestAttribute>();
 
-                                if(null != fMethodAttribute)
+                                if (null != fMethodAttribute)
                                 {
                                     UnitClassDescription fClassDescription = new UnitClassDescription(fTypeInfo.GetCustomAttribute<UnitTestAttribute>(), fTypeInfo.Name, fType, fTypeInfo, null);
                                     UnitMethodDescription fMethodDescription = new UnitMethodDescription(fMethodAttribute, fMethod.Name, fMethod);
@@ -303,7 +298,7 @@ namespace Engine
                                     }
                                     else
                                     {
-                                        if(true == TestHierarchy.TryGetValue(fClassDescription, out fMethodStack))
+                                        if (true == TestHierarchy.TryGetValue(fClassDescription, out fMethodStack))
                                         {
                                             fMethodStack.Push(fMethodDescription);
                                         }
@@ -312,6 +307,37 @@ namespace Engine
                             }
                         }
                     }
+                }
+            }
+            catch
+            {
+                fResult = false;
+            }
+
+            return fResult;
+        }
+
+        public static void PerformAllTests()
+        {
+            UnitTestResult fOverall = new UnitTestResult();
+
+            try
+            {
+                TestHierarchy.Clear();
+                ResultQueue.Clear();
+
+                fOverall.StartTime = DateTime.Now;
+
+                if(false == BuildTestHierarchy())
+                {
+                    fOverall.Result = "ERROR";
+                    fOverall.EndTime = DateTime.Now;
+
+                    ResultQueue.Enqueue(fOverall);
+
+                    WriteReport();
+
+                    return;
                 }
 
                 foreach(var UnitClass in TestHierarchy)
@@ -410,7 +436,7 @@ namespace Engine
             }
             finally
             {
-                fOverall.Result = 0 == fOverall.Failed ? 0 == fOverall.Skipped ? "PASS" : "PARTIAL-SKIP" : "FAIL";
+                fOverall.Result = 0 == fOverall.Failed ? 0 == fOverall.Skipped ? "PASS" : "PARTIAL" : "FAIL";
                 fOverall.EndTime = DateTime.Now;
 
                 ResultQueue.Enqueue(fOverall);
